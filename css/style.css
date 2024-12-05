@@ -180,7 +180,7 @@
 
 @media (min-width: 576px) {
     .team-item .row {
-        height: 350px;
+        height: 20% !important;
     }
 }
 
@@ -243,4 +243,13 @@
 .testimonial-carousel .owl-item img {
     width: 150px;
     height: 150px;
+}
+/*abdelaziz style*/
+  .hover-effect {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+.hover-effect:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
