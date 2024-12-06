@@ -28,6 +28,9 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
 </head>
 
 <body>
@@ -251,56 +254,45 @@
             <div class="row gx-5">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="mb-4">
-                        <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Appointment</h5>
-                        <h1 class="display-4">Make An Appointment For Your Family</h1>
+                        <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Prendre un rendez-vous</h5>
+                        <h1>Prenez un rendez-vous pour votre famille</h1>
                     </div>
-                    <p class="text-white mb-5">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
-                    <a class="btn btn-dark rounded-pill py-3 px-5 me-3" href="">Find Doctor</a>
-                    <a class="btn btn-outline-dark rounded-pill py-3 px-5" href="">Read More</a>
+                    <p class="text-white mb-5">
+                        Réservez facilement une consultation avec nos médecins experts.
+                        Profitez d'un service rapide et efficace pour répondre à vos besoins médicaux.
+                    </p>
                 </div>
                 <div class="col-lg-6">
                     <div class="bg-white text-center rounded p-5">
-                        <h1 class="mb-4">Book An Appointment</h1>
-                        <form>
+                        <h1 class="mb-4">Réservez un rendez-vous</h1>
+                        <form id="appointmentForm">
                             <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-light border-0" style="height: 55px;">
-                                        <option selected>Choose Department</option>
-                                        <option value="1">Department 1</option>
-                                        <option value="2">Department 2</option>
-                                        <option value="3">Department 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-light border-0" style="height: 55px;">
-                                        <option selected>Select Doctor</option>
-                                        <option value="1">Doctor 1</option>
-                                        <option value="2">Doctor 2</option>
-                                        <option value="3">Doctor 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="date" id="date" data-target-input="nearest">
-                                        <input type="text"
-                                            class="form-control bg-light border-0 datetimepicker-input"
-                                            placeholder="Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="time" id="time" data-target-input="nearest">
-                                        <input type="text"
-                                            class="form-control bg-light border-0 datetimepicker-input"
-                                            placeholder="Time" data-target="#time" data-toggle="datetimepicker" style="height: 55px;">
-                                    </div>
+                                <div class="col-12">
+                                    <input type="text" id="name"
+                                           class="form-control bg-light border-0"
+                                           placeholder="Votre nom"
+                                           style="height: 55px;" required>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Make An Appointment</button>
+                                    <input type="email" id="email"
+                                           class="form-control bg-light border-0"
+                                           placeholder="Votre email"
+                                           style="height: 55px;" required>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" id="sujet"
+                                           class="form-control bg-light border-0"
+                                           placeholder="Sujet"
+                                           style="height: 55px;" required>
+                                </div>
+                                <div class="col-12">
+                                    <input type="date" id="date"
+                                           class="form-control bg-light border-0"
+                                           placeholder="Date"
+                                           style="height: 55px;" required>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Envoyer le rendez-vous</button>
                                 </div>
                             </div>
                         </form>
@@ -310,89 +302,143 @@
         </div>
     </div>
     <!-- Appointment End -->
+    <script>
+        // Initialize EmailJS
+        emailjs.init("NpacUaA603aLhgAdP"); // Replace with your Public Key from EmailJS
 
+        // Handle Form Submission
+        document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from refreshing the page
+
+            // Collect form data
+            const formData = {
+                from_name: document.getElementById("name").value, // Match with your template variable
+                subject: document.getElementById("sujet").value, // Match with your template variable
+                from_email: document.getElementById("email").value, // Match with your template variable
+                appointment_date: document.getElementById("date").value, // Custom variable for date
+            };
+
+            // Send the form data using EmailJS
+            emailjs.send("service_u2tpkxp", "template_jj0q8ok", formData) // Use your actual Template ID
+                .then(response => {
+                    alert("Appointment successfully sent! Thank you for booking.");
+                    console.log("EmailJS Response:", response);
+                })
+                .catch(error => {
+                    alert("Failed to send appointment. Please try again.");
+                    console.error("EmailJS Error:", error);
+                });
+        });
+    </script>
 
     <!-- Pricing Plan Start -->
     <div class="container-fluid py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5" style="max-width: 500px;">
-                <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Medical Packages</h5>
-                <h1 class="display-4">Awesome Medical Programs</h1>
+                <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">GALERIE</h5>
             </div>
             <div class="owl-carousel price-carousel position-relative" style="padding: 0 45px 45px 45px;">
+                <!-- Image 1 -->
                 <div class="bg-light rounded text-center">
                     <div class="position-relative">
-                        <img class="img-fluid rounded-top" src="img/price-1.jpg" alt="">
-                        <div class="position-absolute w-100 h-100 top-50 start-50 translate-middle rounded-top d-flex flex-column align-items-center justify-content-center" style="background: rgba(29, 42, 77, .8);">
-                            <h3 class="text-white">Pregnancy Care</h3>
-                            <h1 class="display-4 text-white mb-0">
-                                <small class="align-top fw-normal" style="font-size: 22px; line-height: 45px;">$</small>49<small class="align-bottom fw-normal" style="font-size: 16px; line-height: 40px;">/ Year</small>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="text-center py-5">
-                        <p>Emergency Medical Treatment</p>
-                        <p>Highly Experienced Doctors</p>
-                        <p>Highest Success Rate</p>
-                        <p>Telephone Service</p>
-                        <a href="" class="btn btn-primary rounded-pill py-3 px-5 my-2">Apply Now</a>
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-1.jpg"
+                             alt="Docteur spécialiste en médecine générale, photo 1"
+                             title="Docteur - Galerie 1 : Spécialiste en médecine générale">
                     </div>
                 </div>
+                <!-- Image 2 -->
                 <div class="bg-light rounded text-center">
                     <div class="position-relative">
-                        <img class="img-fluid rounded-top" src="img/price-2.jpg" alt="">
-                        <div class="position-absolute w-100 h-100 top-50 start-50 translate-middle rounded-top d-flex flex-column align-items-center justify-content-center" style="background: rgba(29, 42, 77, .8);">
-                            <h3 class="text-white">Health Checkup</h3>
-                            <h1 class="display-4 text-white mb-0">
-                                <small class="align-top fw-normal" style="font-size: 22px; line-height: 45px;">$</small>99<small class="align-bottom fw-normal" style="font-size: 16px; line-height: 40px;">/ Year</small>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="text-center py-5">
-                        <p>Emergency Medical Treatment</p>
-                        <p>Highly Experienced Doctors</p>
-                        <p>Highest Success Rate</p>
-                        <p>Telephone Service</p>
-                        <a href="" class="btn btn-primary rounded-pill py-3 px-5 my-2">Apply Now</a>
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-2.jpg"
+                             alt="Docteur spécialiste en cardiologie, photo 2"
+                             title="Docteur - Galerie 2 : Spécialiste en cardiologie">
                     </div>
                 </div>
+                <!-- Image 3 -->
                 <div class="bg-light rounded text-center">
                     <div class="position-relative">
-                        <img class="img-fluid rounded-top" src="img/price-3.jpg" alt="">
-                        <div class="position-absolute w-100 h-100 top-50 start-50 translate-middle rounded-top d-flex flex-column align-items-center justify-content-center" style="background: rgba(29, 42, 77, .8);">
-                            <h3 class="text-white">Dental Care</h3>
-                            <h1 class="display-4 text-white mb-0">
-                                <small class="align-top fw-normal" style="font-size: 22px; line-height: 45px;">$</small>149<small class="align-bottom fw-normal" style="font-size: 16px; line-height: 40px;">/ Year</small>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="text-center py-5">
-                        <p>Emergency Medical Treatment</p>
-                        <p>Highly Experienced Doctors</p>
-                        <p>Highest Success Rate</p>
-                        <p>Telephone Service</p>
-                        <a href="" class="btn btn-primary rounded-pill py-3 px-5 my-2">Apply Now</a>
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-3.jpg"
+                             alt="Docteur spécialiste en pédiatrie, photo 3"
+                             title="Docteur - Galerie 3 : Spécialiste en pédiatrie">
                     </div>
                 </div>
+                <!-- Image 4 -->
                 <div class="bg-light rounded text-center">
                     <div class="position-relative">
-                        <img class="img-fluid rounded-top" src="img/price-4.jpg" alt="">
-                        <div class="position-absolute w-100 h-100 top-50 start-50 translate-middle rounded-top d-flex flex-column align-items-center justify-content-center" style="background: rgba(29, 42, 77, .8);">
-                            <h3 class="text-white">Operation & Surgery</h3>
-                            <h1 class="display-4 text-white mb-0">
-                                <small class="align-top fw-normal" style="font-size: 22px; line-height: 45px;">$</small>199<small class="align-bottom fw-normal" style="font-size: 16px; line-height: 40px;">/ Year</small>
-                            </h1>
-                        </div>
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-4.jpg"
+                             alt="Docteur spécialiste en dermatologie, photo 4"
+                             title="Docteur - Galerie 4 : Spécialiste en dermatologie">
                     </div>
-                    <div class="text-center py-5">
-                        <p>Emergency Medical Treatment</p>
-                        <p>Highly Experienced Doctors</p>
-                        <p>Highest Success Rate</p>
-                        <p>Telephone Service</p>
-                        <a href="" class="btn btn-primary rounded-pill py-3 px-5 my-2">Apply Now</a>
+                </div>
+                <!-- Image 5 -->
+                <div class="bg-light rounded text-center">
+                    <div class="position-relative">
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-5.jpg"
+                             alt="Docteur spécialiste en ophtalmologie, photo 5"
+                             title="Docteur - Galerie 5 : Spécialiste en ophtalmologie">
+                    </div>
+                </div>
+                <!-- Image 6 -->
+                <div class="bg-light rounded text-center">
+                    <div class="position-relative">
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-6.jpg"
+                             alt="Docteur spécialiste en chirurgie orthopédique, photo 6"
+                             title="Docteur - Galerie 6 : Spécialiste en chirurgie orthopédique">
+                    </div>
+                </div>
+                <!-- Image 7 -->
+                <div class="bg-light rounded text-center">
+                    <div class="position-relative">
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-7.jpg"
+                             alt="Docteur spécialiste en neurologie, photo 7"
+                             title="Docteur - Galerie 7 : Spécialiste en neurologie">
+                    </div>
+                </div>
+                <!-- Image 8 -->
+                <div class="bg-light rounded text-center">
+                    <div class="position-relative">
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-8.jpg"
+                             alt="Docteur spécialiste en gastro-entérologie, photo 8"
+                             title="Docteur - Galerie 8 : Spécialiste en gastro-entérologie">
+                    </div>
+                </div>
+                <!-- Image 9 -->
+                <div class="bg-light rounded text-center">
+                    <div class="position-relative">
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-9.jpg"
+                             alt="Docteur spécialiste en endocrinologie, photo 9"
+                             title="Docteur - Galerie 9 : Spécialiste en endocrinologie">
+                    </div>
+                </div>
+                <!-- Image 10 -->
+                <div class="bg-light rounded text-center">
+                    <div class="position-relative">
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-10.jpg"
+                             alt="Docteur spécialiste en oncologie, photo 10"
+                             title="Docteur - Galerie 10 : Spécialiste en oncologie">
+                    </div>
+                </div>
+                <!-- Image 11 -->
+                <div class="bg-light rounded text-center">
+                    <div class="position-relative">
+                        <img class="img-fluid rounded-top"
+                             src="img/doctor-image/galerie-11.jpg"
+                             alt="Docteur spécialiste en rhumatologie, photo 11"
+                             title="Docteur - Galerie 11 : Spécialiste en rhumatologie">
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Pricing Plan End -->
@@ -403,7 +449,7 @@
         <div class="container">
             <div class="text-center mx-auto mb-5" style="max-width: 500px;">
                 <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Nos Médecins</h5>
-                <h1 class="display-4">Professionnels de Santé Qualifiés</h1>
+                <h1>Professionnels de Santé Qualifiés</h1>
             </div>
             <div class="position-relative">
                 <div class="team-item">
@@ -440,33 +486,6 @@
         </div>
     </div>
     <!-- Team End -->
-
-
-    <!-- Search Start -->
-    <div class="container-fluid bg-primary my-5 py-5">
-        <div class="container py-5">
-            <div class="text-center mx-auto mb-5" style="max-width: 500px;">
-                <h5 class="d-inline-block text-white text-uppercase border-bottom border-5">Find A Doctor</h5>
-                <h1 class="display-4 mb-4">Find A Healthcare Professionals</h1>
-                <h5 class="text-white fw-normal">Duo ipsum erat stet dolor sea ut nonumy tempor. Tempor duo lorem eos sit sed ipsum takimata ipsum sit est. Ipsum ea voluptua ipsum sit justo</h5>
-            </div>
-            <div class="mx-auto" style="width: 100%; max-width: 600px;">
-                <div class="input-group">
-                    <select class="form-select border-primary w-25" style="height: 60px;">
-                        <option selected>Department</option>
-                        <option value="1">Department 1</option>
-                        <option value="2">Department 2</option>
-                        <option value="3">Department 3</option>
-                    </select>
-                    <input type="text" class="form-control border-primary w-50" placeholder="Keyword">
-                    <button class="btn btn-dark border-0 w-25">Search</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Search End -->
-
-
     <!-- Testimonial Start -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -556,81 +575,6 @@
     </div>
     <!-- Testimonial End -->
 
-
-    <!-- Blog Start -->
-    <div class="container-fluid py-5">
-        <div class="container">
-            <div class="text-center mx-auto mb-5" style="max-width: 500px;">
-                <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Blog Post</h5>
-                <h1 class="display-4">Our Latest Medical Blog Posts</h1>
-            </div>
-            <div class="row g-5">
-                <div class="col-xl-4 col-lg-6">
-                    <div class="bg-light rounded overflow-hidden">
-                        <img class="img-fluid w-100" src="img/blog-1.jpg" alt="">
-                        <div class="p-4">
-                            <a class="h3 d-block mb-3" href="">Dolor clita vero elitr sea stet dolor justo  diam</a>
-                            <p class="m-0">Dolor lorem eos dolor duo et eirmod sea. Dolor sit magna
-                                rebum clita rebum dolor stet amet justo</p>
-                        </div>
-                        <div class="d-flex justify-content-between border-top p-4">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle me-2" src="img/user.jpg" width="25" height="25" alt="">
-                                <small>John Doe</small>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <small class="ms-3"><i class="far fa-eye text-primary me-1"></i>12345</small>
-                                <small class="ms-3"><i class="far fa-comment text-primary me-1"></i>123</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-6">
-                    <div class="bg-light rounded overflow-hidden">
-                        <img class="img-fluid w-100" src="img/blog-2.jpg" alt="">
-                        <div class="p-4">
-                            <a class="h3 d-block mb-3" href="">Dolor clita vero elitr sea stet dolor justo  diam</a>
-                            <p class="m-0">Dolor lorem eos dolor duo et eirmod sea. Dolor sit magna
-                                rebum clita rebum dolor stet amet justo</p>
-                        </div>
-                        <div class="d-flex justify-content-between border-top p-4">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle me-2" src="img/user.jpg" width="25" height="25" alt="">
-                                <small>John Doe</small>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <small class="ms-3"><i class="far fa-eye text-primary me-1"></i>12345</small>
-                                <small class="ms-3"><i class="far fa-comment text-primary me-1"></i>123</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-6">
-                    <div class="bg-light rounded overflow-hidden">
-                        <img class="img-fluid w-100" src="img/blog-3.jpg" alt="">
-                        <div class="p-4">
-                            <a class="h3 d-block mb-3" href="">Dolor clita vero elitr sea stet dolor justo  diam</a>
-                            <p class="m-0">Dolor lorem eos dolor duo et eirmod sea. Dolor sit magna
-                                rebum clita rebum dolor stet amet justo</p>
-                        </div>
-                        <div class="d-flex justify-content-between border-top p-4">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle me-2" src="img/user.jpg" width="25" height="25" alt="">
-                                <small>John Doe</small>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <small class="ms-3"><i class="far fa-eye text-primary me-1"></i>12345</small>
-                                <small class="ms-3"><i class="far fa-comment text-primary me-1"></i>123</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Blog End -->
-    
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light mt-5 py-5">
         <div class="container py-5">
@@ -718,7 +662,6 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
