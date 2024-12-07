@@ -1,4 +1,3 @@
-/********** Template CSS **********/
 :root {
     --primary: #13C5DD;
     --secondary: #354F8E;
@@ -244,7 +243,6 @@
     width: 150px;
     height: 150px;
 }
-/*abdelaziz style*/
   .hover-effect {
       transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   }
